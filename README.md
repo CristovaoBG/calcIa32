@@ -1,3 +1,3 @@
 # calcIa32
-calculadora de quatro operacoes (e mod) implementada em assembly ia32 por Cristóvão Bartholo Gomes.
+calculator of four basic operations (and mod) implemented by Cristóvão Bartholo Gomes.
 github: https://github.com/CristovaoBG
