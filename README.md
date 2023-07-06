@@ -24,13 +24,12 @@ A calculadora oferece as seguintes funcionalidades:
 
 
 1. Ao iniciar o programa, será exibido um menu com as opções disponíveis:
-   - "ESCOLHA UMA OPÇÃO:"
-   - "-1: SOMA"
-   - "-2: SUBTRAÇÃO"
-   - "-3: MULTIPLICAÇÃO"
-   - "-4: DIVISÃO"
-   - "-5: MOD"
-   - "-6: SAIR"
+   - 1: SOMA
+   - 2: SUBTRAÇÃO
+   - 3: MULTIPLICAÇÃO
+   - 4: DIVISÃO
+   - 5: MOD
+   - 6: SAIR
 
 2. Digite o número correspondente à operação desejada.
 
