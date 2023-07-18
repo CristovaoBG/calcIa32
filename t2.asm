@@ -20,14 +20,6 @@ msg6: db "digite segundo argumento:  ",0
 msg7: db "resultado: ",0
 newLine: db 10
 
-;%macro print 2 ; arg1 = msg, arg2 = tamanho
-;mov eax, 4
-;mov ebx, 1
-;mov ecx, %1
-;mov edx, %2
-;int 80h
-;%endmacro
-
 section .text
 
 
