@@ -27,8 +27,8 @@ print:
 enter 0,0 ;push ebp; move ebp, esp
 mov eax, 4
 mov ebx, 1
-mov ecx, [ebp+12]	;endereco
-mov edx, [ebp+8]	;tamanho
+mov ecx, [ebp+12]							; endereco
+mov edx, [ebp+8]							; tamanho
 int 80h
 leave
 ret 
@@ -36,7 +36,7 @@ ret
 strlen:
 push ebp
 mov ebp,esp
-mov eax,[ebp+8]	;argumento = endereco da string
+mov eax,[ebp+8]								; argumento = endereco da string
 sub ecx,ecx
 strlenLoop:
 ;cmp byte [eax],10
@@ -47,7 +47,7 @@ inc ecx
 inc eax
 jmp strlenLoop
 fimStrlen:
-mov eax,ecx	;valor de retorno
+mov eax,ecx									; valor de retorno
 mov esp,ebp
 pop ebp
 ret
@@ -55,13 +55,13 @@ ret
 printStr:
 push ebp
 mov ebp,esp
-;calcula tamanho da string
+; calcula tamanho da string
 push dword[ebp+8]
 call strlen
 add esp,4
-;chama funcao pra printar
+; chama funcao pra printar
 push dword[ebp+8]
-push eax	;qtdd de bytes a printar
+push eax									; qtdd de bytes a printar
 call print
 add esp,4
 mov esp,ebp
@@ -93,25 +93,27 @@ ret
 str2uint:
 push ebp
 mov ebp,esp
-sub eax,eax			;zera eax
-sub ecx,ecx			;zera ecx
-mov ecx, [esp+8]	;carrega endereco do primeiro digito em ascii
-cmp dword [ecx],0			;se primeiro digito for \0 ja sai
+sub eax,eax									; zera
+sub ecx,ecx
+mov ecx, [esp+8]							; carrega endereco do primeiro digito em ascii
+cmp dword [ecx],0							; se primeiro digito for \0 ja sai
 je endStr2uint		
 str2uintLoop:
-sub edx,edx			;zera edx
-mov dl, [ecx]		;carrega digito em edx
-sub edx, 0x30		;converte para digito numerico
-add eax,edx			;adiciona ao acumulador
-cmp byte [ecx+1], 0	;verifica se eh o digito menos significativo
+sub edx,edx
+mov dl, [ecx]								; carrega digito em edx
+sub edx, 0x30								; converte para digito numerico
+add eax,edx									; adiciona ao acumulador
+cmp byte [ecx+1], 0							; verifica se eh o digito menos significativo
 je endStr2uint
-; se nao for o digito menos significativo multiplica acumulador por 10, incrementa o cursor e salta para o loop
-push eax			;empilha valor original
-shl eax, 3			;multiplica por oito
-add eax,[esp]			;soma com valor original
-add eax,[esp]		;multiplicou por dez
-add esp,4			;desempilha eax
-inc ecx				;incrementa cursor da string
+; se nao for o digito menos significativo
+; multiplica acumulador por 10, incrementa
+; o cursor e salta para o loop
+push eax									; empilha valor original
+shl eax, 3									; multiplica por oito
+add eax,[esp]								; soma com valor original
+add eax,[esp]								; multiplicou por dez
+add esp,4									; desempilha eax
+inc ecx										; incrementa cursor da string
 jmp str2uintLoop
 endStr2uint:
 mov esp,ebp
@@ -121,25 +123,25 @@ ret
 str2int:
 push ebp
 mov ebp,esp
-;le primeiro caractere e ve se eh negativo
+; le primeiro caractere e ve se eh negativo
 mov eax,[esp+8]
 cmp byte [eax],'-'
 je str2intEhNegativo
-push dword [esp+8]	;se nao for negativo le normal
+push dword [esp+8]							; se nao for negativo le normal
 call str2uint
 add esp,4
 jmp fimStr2int
 str2intEhNegativo:
-;le o numero ignorando o sinal a principio
+; le o numero ignorando o sinal a principio
 mov eax, [esp+8]
 inc eax
 push eax
 call str2uint
 add esp,4
-;subtrai de zero, para negativar
+; subtrai de zero, para negativar
 mov ebx,0
-sub ebx,eax	; ebx recebe numero negativasdo
-mov eax,ebx ; passa para eax o retorno
+sub ebx,eax									; ebx recebe numero negativasdo
+mov eax,ebx 								; passa para eax o retorno
 fimStr2int:
 mov esp,ebp
 pop ebp
@@ -155,7 +157,7 @@ mov ecx,[ebp+8]
 mov edx, 1024
 int 80h
 ;remove \n do final
-mov eax,[ebp+8]	;argumento = endereco da string
+mov eax,[ebp+8]								; argumento = endereco da string
 readStrlenLoop:
 cmp byte [eax],10
 jz fimReadStrlen
@@ -170,8 +172,8 @@ ret
 soma:
 push ebp
 mov ebp,esp
-mov eax,[ebp+12]	;primeiro argumento
-add eax,[ebp+8]		;soma segundo argumento
+mov eax,[ebp+12]							; primeiro argumento
+add eax,[ebp+8]								; soma segundo argumento
 mov esp,ebp
 pop ebp
 ret
@@ -179,8 +181,8 @@ ret
 subtracao:
 push ebp
 mov ebp,esp
-mov eax,[ebp+12]	;primeiro argumento
-sub eax,[ebp+8]		;subtrai segundo argumento
+mov eax,[ebp+12]							; primeiro argumento
+sub eax,[ebp+8]								; subtrai segundo argumento
 mov esp,ebp
 pop ebp
 ret
@@ -188,9 +190,9 @@ ret
 multiplicacao:
 push ebp
 mov ebp,esp
-sub edx,edx			;zera edx
-mov eax,[ebp+12]	;primeiro argumento
-mul dword [ebp+8]	;divide pelo segundo argumentos
+sub edx,edx									; zera edx
+mov eax,[ebp+12]							; primeiro argumento
+mul dword [ebp+8]							; divide pelo segundo argumentos
 mov esp,ebp
 pop ebp
 ret
@@ -198,9 +200,9 @@ ret
 divisao:
 push ebp
 mov ebp,esp
-sub edx,edx			;zera edx
-mov eax,[ebp+12]	;primeiro argumento
-div dword [ebp+8]	;divide pelo segundo argumentos
+sub edx,edx									; zera edx
+mov eax,[ebp+12]							; primeiro argumento
+div dword [ebp+8]							; divide pelo segundo argumentos
 mov esp,ebp
 pop ebp
 ret
@@ -208,10 +210,10 @@ ret
 resto:
 push ebp
 mov ebp,esp
-sub edx,edx			;zera edx
-mov eax,[ebp+12]	;primeiro argumento
-idiv dword [ebp+8]	;divide pelo segundo argumentos
-mov eax,edx			;retorna o resto
+sub edx,edx									; zera edx
+mov eax,[ebp+12]							; primeiro argumento
+idiv dword [ebp+8]							; divide pelo segundo argumentos
+mov eax,edx									; retorna o resto
 mov esp,ebp
 pop ebp
 ret
@@ -219,19 +221,19 @@ ret
 uint2str:
 	push ebp
 	mov ebp,esp
-	mov eax,[ebp+8]	;valor a ser printado
-uint2strLoop:		;divide por 10
+	mov eax,[ebp+8]							; valor a ser printado
+uint2strLoop:								; divide por 10
 	mov ebx, 10
 	mov edx, 0
 	div ebx
-;salva resto
+; salva resto
 	add edx,0x30 ;converte para char
 	push edx
-;loop com o valor da divisao se nao for 0
+; loop com o valor da divisao se nao for 0
 	cmp eax,0
 	ja uint2strLoop
-uint2strInverte:		;inverte de antes do cursor ate ebp
-	mov eax,[ebp+12]	;eax <- endereco da string final
+uint2strInverte:							; inverte de antes do cursor ate ebp
+	mov eax,[ebp+12]						; eax <- endereco da string final
 uint2strInverteLoop:
 	cmp esp,ebp	
 	jae fimUint2str
@@ -251,23 +253,23 @@ fimUint2str:
 int2str:
 	push ebp
 	mov ebp,esp
-;verifica se eh maior que zero
+; verifica se eh maior que zero
 	mov eax,[ebp+8]
 	cmp eax,0
 	js int2strIsNeg
-;se nao for negativo faz uint2str normalmente
+; se nao for negativo faz uint2str normalmente
 	push dword [ebp+12]
 	push dword [ebp+8]
 	call uint2str
 	add esp,8
 	jmp endInt2str
-int2strIsNeg: 		;insere '-' na frente
+int2strIsNeg: 								; insere '-' na frente
 	mov eax,[ebp+12]
 	mov byte [eax], '-'
 	add eax,1
 	push eax
 	mov eax, [ebp+8]
-	neg eax		;pega valor absoluto
+	neg eax									; pega valor absoluto
 	push eax
 	call uint2str
 	add esp,8
@@ -277,91 +279,93 @@ endInt2str:
 	ret
 
 _start:
-;imprime msg perguntando nome
+; imprime msg perguntando nome
 	push msg2
 	call printStr
 	add esp,4
-;le input do nome
+; le input do nome
 	push inputBuffer
 	call read
 	add esp,4
 	call nl
-;imprime primeira parte da msg de boas vindas
+; imprime primeira parte da msg de boas vindas
 	push msg3
 	call printStr
 	add esp,4
-;imprime nome
+; imprime nome
 	push inputBuffer
 	call printStr
 	add esp,4
-;imprime resto da msg
+; imprime resto da msg
 	push msg4
 	call printStr
 	add esp,4
-;imprime menu
+; imprime menu
 menu:
 	call nl
 	push msg0
 	call printStr
 	add esp,4
 	call nl
-;le input do menu e empilha
+; le input do menu e empilha
 	push inputBuffer
 	call read
 	add esp,4
-	sub byte [inputBuffer],0x30 ;converte para numero
+	sub byte [inputBuffer],0x30 					; converte para numero
 	sub eax,eax
 	mov al,[inputBuffer]
-;se for exit ja sai
+; se for exit ja sai
 	cmp al,6
 	je end
-	push eax	;empilha conteudo lido LEMBRAR DE DESEMPILHAR!
-;le input e empilha (primeiro arg)
+	push eax										; empilha conteudo lido LEMBRAR DE DESEMPILHAR!
+; le input e empilha (primeiro arg)
 	push msg5
 	call printStr
 	add esp,4
 	push inputBuffer
 	call read
 	add esp,4
-;converte string para numero
+; converte string para numero
 	push inputBuffer
 	call str2int
 	add esp,4
-	push eax ;emppilha primeiro argumento da operacao a ser feita
-;le input e empilha (segundo arg)
+	push eax 										; emppilha primeiro argumento da operacao a ser feita
+; le input e empilha (segundo arg)
 	push msg6
 	call printStr
 	add esp,4
 	push inputBuffer
 	call read
 	add esp,4
-;converte string para numero
+; converte string para numero
 	push inputBuffer
 	call str2int
 	add esp,4
-	push eax ;emppilha primeiro argumento da operacao a ser feita
-;le primeir  umero empilhado la em cima e vai para menu correspondente
-	cmp byte [esp+8],1	;ve se eh soma
-	jne naoEhSoma	;os argumentos ja estao empilhados logo acima
+	push eax 
+; emppilha primeiro argumento da operacao a ser feita
+; e primeiro numero empilhado la em cima e vai para
+; menu correspondente
+	cmp byte [esp+8],1								; ve se eh soma
+	jne naoEhSoma									; os argumentos ja estao empilhados logo acima
 	call soma
 	jmp fimOp
 naoEhSoma:
-	cmp byte [esp+8],3 ;ve se eh mult
+	cmp byte [esp+8],3 								; ve se eh mult
 	jne naoEhMult
 	call multiplicacao
 	jmp fimOp
 naoEhMult:
-	cmp byte [esp+8],2 ;ve se eh subtracao
+	cmp byte [esp+8],2 								; ve se eh subtracao
 	jne naoEhSub
 	call subtracao
 	jmp fimOp
 naoEhSub:
-	cmp byte [esp+8],4 ;ve se eh div
+	cmp byte [esp+8],4 								; ve se eh div
 	jne naoEhDiv
 	call divisao
 	jmp fimOp
 naoEhDiv:
-	cmp byte [esp+8],5 ;ve se eh mod
+	cmp byte [esp+8],5 								; ve se eh mod
 	jne naoEhMod
 	call resto
 	jmp fimOp
@@ -369,7 +373,7 @@ naoEhMod:
 	jmp menu
 
 fimOp:
-	add esp,10	;8 para a funcao e dois para o numero do menu
+	add esp,10										; 8 para a funcao e dois para o numero do menu
 ; imprime resultado na tela
 	push inputBuffer
 	push eax
